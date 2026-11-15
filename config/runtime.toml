@@ -1,0 +1,22 @@
+[web]
+host = "127.0.0.1"
+port = 5055
+debug = false
+
+[runtime]
+database_path = "data/sqlite/runtime.db"
+secret_path = "data/runtime/flask_secret.key"
+chroma_snapshot_root = "data/runtime/chroma_snapshots"
+
+[matter]
+max_rounds = 8
+warning_round = 7
+
+[retention]
+raw_data_days = 7
+cleanup_on_startup = true
+cleanup_before_request = true
+
+[notice]
+version = "cloud-transfer-session-v4"
+text_path = "config/cloud_notice_session_v4.txt"

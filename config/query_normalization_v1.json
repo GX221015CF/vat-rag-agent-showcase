@@ -1,0 +1,74 @@
+{
+  "version": "query-planner-v1",
+  "enabled": true,
+  "max_expansion_terms": 8,
+  "document_aliases": [
+    {
+      "rule_id": "DOCUMENT_ALIAS_VAT_REGULATION",
+      "canonical_title": "中华人民共和国增值税法实施条例",
+      "aliases": [
+        "中华人民共和国增值税法实施条例",
+        "增值税法实施条例",
+        "增值税实施条例"
+      ]
+    },
+    {
+      "rule_id": "DOCUMENT_ALIAS_TAX_COLLECTION_RULES",
+      "canonical_title": "中华人民共和国税收征收管理法实施细则",
+      "aliases": [
+        "中华人民共和国税收征收管理法实施细则",
+        "税收征收管理法实施细则",
+        "税收征管法实施细则",
+        "征管法实施细则"
+      ]
+    },
+    {
+      "rule_id": "DOCUMENT_ALIAS_VAT_LAW",
+      "canonical_title": "中华人民共和国增值税法",
+      "aliases": [
+        "中华人民共和国增值税法",
+        "增值税法"
+      ]
+    },
+    {
+      "rule_id": "DOCUMENT_ALIAS_INVOICE_MEASURES",
+      "canonical_title": "中华人民共和国发票管理办法",
+      "aliases": [
+        "中华人民共和国发票管理办法",
+        "发票管理办法"
+      ]
+    },
+    {
+      "rule_id": "DOCUMENT_ALIAS_TAX_COLLECTION_LAW",
+      "canonical_title": "中华人民共和国税收征收管理法",
+      "aliases": [
+        "中华人民共和国税收征收管理法",
+        "税收征收管理法",
+        "税收征管法",
+        "征管法"
+      ]
+    }
+  ],
+  "expansion_rules": [
+    {
+      "rule_id": "COLLOQUIAL_SPECIAL_INVOICE_V1",
+      "triggers": ["专票"],
+      "terms": ["增值税专用发票"]
+    },
+    {
+      "rule_id": "COLLOQUIAL_NON_DEDUCTIBLE_V1",
+      "triggers": ["不能抵扣", "不能抵"],
+      "terms": ["不得抵扣"]
+    },
+    {
+      "rule_id": "COLLOQUIAL_TAX_DEFERRAL_V1",
+      "triggers": ["延期交税", "延迟交税"],
+      "terms": ["延期缴纳税款"]
+    },
+    {
+      "rule_id": "COLLOQUIAL_ACCOUNT_FREEZE_V1",
+      "triggers": ["冻结账户"],
+      "terms": ["冻结存款"]
+    }
+  ]
+}

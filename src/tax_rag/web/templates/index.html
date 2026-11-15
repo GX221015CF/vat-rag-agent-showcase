@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}增值税政策咨询{% endblock %}
+{% block content %}
+<section class="home-intro"><h1>增值税政策咨询</h1><p>查询境内一般纳税人与小规模纳税人销售货物政策，核对法规与计算。</p></section>
+<section class="panel home-composer">
+  <form method="post" action="{{ url_for('main.create_matter') }}" data-new-consultation>
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <label for="initial-question">你的问题</label>
+    <textarea id="initial-question" name="content" data-question-input rows="4" maxlength="1000" required placeholder="请输入你的问题"></textarea>
+    <div class="composer-actions"><button class="primary">开始咨询</button></div>
+  </form>
+</section>
+<details class="home-data-note"><summary>资料与使用范围</summary><p>境内销售货物。一般纳税人一般计税，以及小规模基础计税、起征点和相关开票。资料核验截至2026年11月15日，历史及未来期间需要核对依据。</p>{% if generation %}<p>当前活动库{{ generation.chunk_count }}个知识块，回答采用{{ model_id }}。<a class="source-link" href="{{ url_for('main.knowledge') }}">查看资料状态</a></p>{% else %}<p>活动知识库暂时不可用，请检查服务配置。</p>{% endif %}</details>
+<details class="recent-consultations" id="recent-consultations" data-accordion="340">
+  <summary>最近咨询 <span class="history-count">{{ matters|length }}条</span></summary>
+  <div class="matter-list">{% for item in matters %}
+    <a class="matter-card" title="{{ item.display_title }}"{% if item.status == 'DRAFT' %} data-resume-notice{% endif %} href="{{ url_for('main.notice' if item.status == 'DRAFT' else 'main.matter', matter_id=item.matter_id) }}">
+      <span class="matter-title">{{ item.display_title }}</span>
+      <time datetime="{{ item.updated_at }}" title="北京时间">{{ item.display_time }}</time>
+      <span class="matter-state">{{ '待开始' if item.status == 'DRAFT' else ('可继续' if item.status == 'ACTIVE' else '已结束') }}</span>
+    </a>
+  {% else %}<p class="history-empty">暂无咨询记录</p>{% endfor %}</div>
+</details>
+{% endblock %}

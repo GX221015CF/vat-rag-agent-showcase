@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}云端传输提示 · 增值税咨询助手{% endblock %}
+{% block content %}
+<section class="narrow panel notice-panel">
+  <p class="eyebrow">事项 {{ matter.matter_id[:8] }} · 开始前确认</p>
+  <h1>请先阅读云端传输提示</h1>
+  <div class="notice-text">{{ notice_text }}</div>
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <label class="checkbox-row">
+      <input type="checkbox" name="accepted" value="yes">
+      <span>我已了解问题、必要历史对话、检索证据与本咨询计算结果会发送给DeepSeek。</span>
+    </label>
+    <div class="actions">
+      <a class="secondary" href="{{ url_for('main.index') }}">暂不开始</a>
+      <button class="primary" type="submit">接受并进入事项</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

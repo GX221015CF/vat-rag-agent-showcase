@@ -1,0 +1,21 @@
+[retrieval]
+exact_top_k = 10
+fts_top_k = 20
+vector_top_k = 20
+candidate_pool_top_k = 40
+final_top_k = 5
+
+[rrf]
+k = 60
+exact_weight = 2.0
+fts_weight = 1.0
+vector_weight = 1.0
+
+[fts]
+use_jieba_search_tokens = true
+use_chinese_bigrams = true
+
+[reranker]
+enabled = true
+strategy = "LEGAL_CROSS_REFERENCE_RESCUE_V1"
+referrer_top_n = 1

@@ -1,0 +1,53 @@
+# Default: include only the reviewed showcase allowlist.
+/*
+!/README.md
+!/.gitignore
+!/.env.example
+!/pyproject.toml
+!/requirements-p2b.in
+!/requirements-p2b.lock.txt
+!/src/
+!/tests/
+!/scripts/
+!/config/
+!/docs/
+
+# Never include local data, runtime state, logs, or private task material.
+/data/
+/artifacts/
+/evals/
+/.venv/
+/.codex-tmp/
+/.env
+/.env.*
+!/.env.example
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.log
+*.egg-info/
+__pycache__/
+*.py[cod]
+
+# Only the two reviewed web lifecycle scripts are included.
+/scripts/*
+!/scripts/start_web.ps1
+!/scripts/stop_web.ps1
+
+# Only active web runtime configuration is included.
+/config/*
+!/config/app.toml
+!/config/p2b.toml
+!/config/retrieval.toml
+!/config/runtime.toml
+!/config/query_normalization_v1.json
+!/config/scope_topics_v2.json
+!/config/system_prompt_web_v1.txt
+!/config/cloud_notice_session_v4.txt
+
+# Only the reviewed showcase documents are included.
+/docs/*
+!/docs/展示文件清单.md
+!/docs/架构与复现说明.md
+!/docs/评估摘要.md

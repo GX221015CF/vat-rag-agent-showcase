@@ -1,0 +1,46 @@
+<details class="panel calculation-panel" id="calculator" data-accordion="340" {% if calculation %}open{% endif %}><summary class="calculator-toggle">价税换算与期间汇总</summary>
+  <div class="panel-heading"><h2>金额计算</h2><span>规则：输出保留两位小数，ROUND_HALF_UP</span></div>
+  {% if calculation %}
+    <div class="calculation-result">
+      <div><span>最新计算</span><strong>{{ '单笔价税计算' if calculation.calculation_type == 'SINGLE_TRANSACTION' else '纳税期间汇总' }}</strong></div>
+      {% if calculation.calculation_type == 'SINGLE_TRANSACTION' %}
+        <div><span>不含税金额</span><strong>¥{{ calculation.outputs.net_amount }}</strong></div>
+        <div><span>税额</span><strong>¥{{ calculation.outputs.tax_amount }}</strong></div>
+        <div><span>含税金额</span><strong>¥{{ calculation.outputs.gross_amount }}</strong></div>
+      {% else %}
+        <div><span>本期应纳税额</span><strong>¥{{ calculation.outputs.tax_payable }}</strong></div>
+        <div><span>期末留抵</span><strong>¥{{ calculation.outputs.ending_credit }}</strong></div>
+      {% endif %}
+      <div><span>公式版本</span><strong class="mono">{{ calculation.formula_version }}</strong></div>
+    </div>
+    {% set input_labels = {'amount': '金额', 'amount_type': '金额口径', 'tax_rate_percent': '税率（%）', 'tax_rate_fraction': '税率小数', 'output_tax': '销项税额', 'deductible_input_tax': '允许抵扣进项', 'input_tax_transfer_out': '进项转出', 'prior_credit': '上期留抵'} %}
+    <div class="calculation-inputs"><strong>本次确认输入</strong><dl>{% for key, value in calculation.inputs.items() %}<div><dt>{{ input_labels.get(key, key) }}</dt><dd>{{ '含税' if value == 'TAX_INCLUDED' else ('不含税' if value == 'TAX_EXCLUDED' else value) }}</dd></div>{% endfor %}</dl><p>{{ calculation.intermediates.formula }}</p></div><details class="calculation-audit" id="calculation-audit" data-accordion="240"><summary>查看精确中间值与结果哈希</summary><pre>{{ calculation.intermediates | tojson(indent=2) }}</pre><p class="mono">{{ calculation.result_hash }}</p></details>
+  {% else %}
+    <p class="empty">尚无本地计算。税率必须由你根据正式证据确认，DeepSeek不会替你选择税率。</p>
+  {% endif %}
+
+  {% if matter.status in ['DRAFT', 'ACTIVE'] %}
+    <div class="calculator-grid">
+      <form data-calculation-form method="post" action="{{ url_for('main.calculate_single', matter_id=matter.matter_id) }}">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <h3>单笔价税计算</h3>
+        <label>金额<input name="amount" inputmode="decimal" required placeholder="例如 113000.00"></label>
+        <label>金额类型<select name="amount_type"><option value="TAX_INCLUDED">含税金额</option><option value="TAX_EXCLUDED">不含税金额</option></select></label>
+        <label>已确认税率或征收率（%）<input name="tax_rate_percent" inputmode="decimal" required placeholder="例如 13 或 1"></label>
+        <label class="checkbox-row"><input type="checkbox" name="confirmed" required value="yes"><span>我已确认金额口径和适用税率</span></label>
+        <button class="primary" type="submit">执行金额计算</button>
+      </form>
+      <form data-calculation-form method="post" action="{{ url_for('main.calculate_period', matter_id=matter.matter_id) }}">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <h3>一般计税期间汇总</h3>
+        <p>适用于已确认的一般计税税额，小规模简易计税不使用销项减进项汇总。</p>
+        <label>销项税额<input name="output_tax" inputmode="decimal" required value="0.00"></label>
+        <label>允许抵扣进项税额<input name="deductible_input_tax" inputmode="decimal" required value="0.00"></label>
+        <label>进项税额转出<input name="input_tax_transfer_out" inputmode="decimal" required value="0.00"></label>
+        <label>上期留抵<input name="prior_credit" inputmode="decimal" required value="0.00"></label>
+        <label class="checkbox-row"><input type="checkbox" name="confirmed" required value="yes"><span>我已确认以上税额均真实且准确</span></label>
+        <button class="primary" type="submit">执行期间汇总</button>
+      </form>
+    </div>
+  {% endif %}
+</details>

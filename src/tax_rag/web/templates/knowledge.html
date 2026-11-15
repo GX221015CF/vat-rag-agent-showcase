@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}资料状态 · 增值税咨询助手{% endblock %}
+{% block content %}
+<section class="matter-header">
+  <div><p class="eyebrow">只读资料审核页</p><h1>正式活动知识库</h1></div>
+  <div class="round-box"><span>Generation</span><strong class="mono">{{ generation.generation_id }}</strong><span class="badge badge-active">{{ generation.status }}</span></div>
+</section>
+
+<section class="panel table-wrap">
+  <table>
+    <thead><tr><th>资料</th><th>层级</th><th>审批</th><th>Chunk</th><th>来源文件</th></tr></thead>
+    <tbody>
+      {% for document in documents %}
+        <tr>
+          <td><strong>{{ document.title }}</strong><small class="mono">{{ document.source_sha256[:12] }}…</small></td>
+          <td>{{ document.legal_level }}</td>
+          <td><span class="badge badge-active">{{ document.approval_status }}</span></td>
+          <td>{{ document.chunk_count }}</td>
+          <td>{{ document.source_filename }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="table-note">P2A不提供上传、自动审批、索引重建或Chroma管理入口。</p>
+</section>
+{% endblock %}
+

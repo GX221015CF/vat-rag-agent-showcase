@@ -1,0 +1,22 @@
+[deepseek]
+base_url = "https://api.deepseek.com"
+model = "deepseek-flash"
+api_key_env = "DEEPSEEK_API_KEY"
+timeout_seconds = 60
+# 本机直连可用，避免继承启动宿主中已失效的代理环境变量。
+trust_env = false
+max_retries = 0
+temperature = 0.0
+max_tokens = 8000
+thinking_mode = "enabled"
+
+[prompt]
+version = "vat-web-concise-final-v6.14"
+system_text_path = "config/system_prompt_web_v1.txt"
+
+[calculation]
+formula_version = "vat-decimal-v1"
+rounding_rule_version = "cny-cent-half-up-v1"
+currency = "CNY"
+quantum = "0.01"
+rounding_mode = "ROUND_HALF_UP"

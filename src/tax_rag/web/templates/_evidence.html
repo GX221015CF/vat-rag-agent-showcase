@@ -1,0 +1,16 @@
+{% macro render_evidence(hit, round_number, matter_id, prefix='evidence', cited=true) -%}
+{% set version = hit.source.get('version', {}) %}
+<details class="evidence-card" data-accordion="240" id="{{ prefix }}-{{ round_number }}-{{ hit.chunk_id }}">
+  <summary><span class="rank" aria-label="{{ '原检索序号' if prefix == 'retrieved' or not cited else '引用' }}{{ hit.rank }}">{{ hit.rank }}</span><span><strong>{{ hit.document_title }}</strong><small>{{ version.document_number }} · {{ hit.anchor }}</small></span></summary>
+  <div class="evidence-actions"><button type="button" class="text-button" data-evidence-return hidden>返回引用</button><button type="button" class="text-button" data-evidence-close>收起原文</button></div>
+  <p class="evidence-text">{{ hit.text }}</p>
+  <dl>
+    <div><dt>发布机关</dt><dd>{{ version.issuer or '见官方原文' }}</dd></div>
+    <div><dt>适用期间</dt><dd>{{ version.effective_from or '需核对' }}起{% if version.effective_to %}，至{{ version.effective_to }}{% endif %}</dd></div>
+    {% if version.conditional_retroactive_from %}<div><dt>过渡条件</dt><dd>{{ version.conditional_retroactive_from }}起已发生未处理事项可按文件规定执行，须核对是否未处理。</dd></div>{% endif %}
+    <div><dt>核验日期</dt><dd>{{ version.verified_on or '待核对' }}</dd></div>
+    {% if version.official_url and version.official_url.startswith('https://') %}<div><dt>官方来源</dt><dd><a class="source-link" href="{{ version.official_url }}" target="_blank" rel="noopener noreferrer">打开官方原文 ↗</a></dd></div>{% endif %}
+  </dl>
+  <details class="evidence-identity" data-accordion="240"><summary>证据身份与回查</summary><dl><div><dt>证据ID</dt><dd class="mono">{{ hit.chunk_id }}</dd></div><div><dt>原件哈希</dt><dd class="mono">{{ version.original_sha256 or version.normalized_sha256 }}</dd></div></dl><a class="source-link" href="{{ url_for('main.evidence', matter_id=matter_id, round_number=round_number, chunk_id=hit.chunk_id) }}" target="_blank" rel="noopener">回查本轮证据记录</a></details>
+</details>
+{%- endmacro %}

@@ -1,0 +1,12 @@
+<dialog class="cloud-dialog" data-cloud-dialog data-consent-required="{{ 'false' if cloud_confirmed else 'true' }}" aria-labelledby="cloud-title" aria-describedby="cloud-description">
+  <form method="post" action="{{ url_for('main.confirm_cloud_notice') }}" data-cloud-confirm>
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <input type="hidden" name="matter_id" value="{{ matter.matter_id if matter is defined else '' }}">
+    <h2 id="cloud-title" tabindex="-1">云端模型传输提示</h2>
+    <p id="cloud-description" class="cloud-recipient">传输接收方 <strong>DeepSeek</strong></p>
+    <div class="cloud-notice-text">{% for part in config.NOTICE_TEXT.split('DeepSeek') %}{{ part }}{% if not loop.last %}<mark>DeepSeek</mark>{% endif %}{% endfor %}</div>
+    <label class="checkbox-row"><input type="checkbox" name="accepted" value="yes" required><span>我已了解<strong>问题、必要历史对话、检索证据与本咨询计算结果</strong>会发送给<strong>DeepSeek</strong>。</span></label>
+    <div role="alert" data-consent-error hidden></div>
+    <div class="actions"><button class="secondary" type="button" data-cloud-cancel>取消</button><button class="primary" type="submit">确认并继续</button></div>
+  </form>
+</dialog>

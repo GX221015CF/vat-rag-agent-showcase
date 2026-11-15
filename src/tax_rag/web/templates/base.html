@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}增值税政策咨询{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+  <script type="module" src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('main.index') }}">增值税政策咨询</a>
+    <nav>
+      <a href="{{ url_for('main.index') }}">咨询首页</a>
+      <a href="{{ url_for('main.knowledge') }}">资料状态</a>
+    </nav>
+  </header>
+  <main class="page">
+    {% with alerts = get_flashed_messages(with_categories=true) %}
+      {% for category, message in alerts %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  {% include "_cloud_notice.html" %}
+  <div class="notice-host" data-notice-host role="status" aria-live="polite"></div>
+  <footer>
+    政策回答请核对引用原文与适用条件
+  </footer>
+</body>
+</html>

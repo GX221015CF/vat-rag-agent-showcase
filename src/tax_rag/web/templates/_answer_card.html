@@ -1,0 +1,28 @@
+{% macro citation_pills(citations, round_number, slot='conclusion') -%}
+{% for citation in citations %}<a class="answer-citation" id="cite-{{ round_number }}-{{ slot }}-{{ loop.index }}" href="#evidence-{{ round_number }}-{{ citation.chunk_id }}" data-evidence-link aria-label="证据{{ citation.rank }}，{{ citation.document_title }}，{{ citation.anchor }}" title="{{ citation.document_title }} · {{ citation.anchor }}">{{ citation.rank }}</a>{% endfor %}
+{%- endmacro %}
+
+{% macro render_structured_answer(answer, round_number=0) -%}
+<div class="structured-answer structured-answer-{{ answer.status|lower|replace('_', '-') }}">
+  <div class="answer-main" data-copy-text="{{ answer.copy_text }}">
+    <section class="answer-section answer-conclusion">
+      <div class="answer-heading-row"><h3>直接结论</h3>{% if answer.status != 'ANSWERED' %}<span class="answer-status">{{ answer.status_label }}</span>{% endif %}</div>
+      {% if answer.conclusion_items %}
+      <ul class="answer-conclusion-points">{% for item in answer.conclusion_items %}<li><span class="answer-conclusion-text">{{ item.text }}</span> {{ citation_pills(item.citations, round_number, 'point-' ~ loop.index) }}</li>{% endfor %}</ul>
+      {% else %}
+      {% for line in answer.conclusion_lines %}<p class="answer-conclusion-text">{{ line }}</p>{% endfor %}
+      <div class="conclusion-citations">{{ citation_pills(answer.direct_conclusion.citations, round_number) }}</div>
+      {% endif %}
+    </section>
+    {% if answer.prerequisites %}<section class="answer-section answer-conditions"><h3>适用条件</h3><ul>{% for item in answer.prerequisites %}<li>{{ item }}</li>{% endfor %}</ul></section>{% endif %}
+    {% if answer.critical_gaps %}<section class="answer-section answer-critical"><h3>本题还缺少的依据</h3><ul>{% for item in answer.critical_gaps %}<li>{{ item }}</li>{% endfor %}</ul></section>{% endif %}
+    {% if answer.calculation %}<section class="answer-section answer-calculation"><h3>{{ answer.calculation.title }}</h3><div class="answer-calculation-grid">{% for item in answer.calculation['items'] %}<div><span>{{ item.label }}</span><strong>{{ item.value }}</strong><small>{{ item.unit }}</small></div>{% endfor %}</div><p class="calculation-method">本地确定性结果 · 金额保留两位小数</p></section>{% endif %}
+    {% if answer.follow_up_question %}<section class="answer-section answer-follow-up"><h3>请补充一个信息</h3><p>{{ answer.follow_up_question }}</p></section>{% endif %}
+  </div>
+</div>
+{%- endmacro %}
+
+{% macro render_answer_trace(answer, round_number, hits=[], matter_id='') -%}
+<details class="answer-trace" id="trace-{{ round_number }}" data-accordion="240"><summary>技术详情</summary><dl><div><dt>采用期间</dt><dd>{{ answer.trace.policy_as_of or '请核对条文期间' }}</dd></div><div><dt>检索查询</dt><dd>{{ answer.trace.retrieval_query }}</dd></div><div><dt>模型用时</dt><dd>{{ answer.trace.model_latency_seconds }}秒</dd></div><div><dt>模型</dt><dd>{{ answer.trace.model_id }}</dd></div><div><dt>提示词</dt><dd>{{ answer.trace.prompt_version }}</dd></div><div><dt>索引</dt><dd>{{ answer.trace.generation_id }}</dd></div><div><dt>补检查询</dt><dd>{{ answer.trace.supplementary_queries }}</dd></div>{% if answer.trace.response_id %}<div><dt>响应</dt><dd class="mono">{{ answer.trace.response_id }}</dd></div>{% endif %}</dl>
+{% if hits %}{% from "_evidence.html" import render_evidence %}<details id="retrieval-{{ round_number }}" data-accordion="240"><summary>全部检索依据（原检索顺序）</summary>{% for hit in hits %}{{ render_evidence(hit, round_number, matter_id, 'retrieved') }}{% endfor %}</details>{% endif %}</details>
+{%- endmacro %}

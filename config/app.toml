@@ -1,0 +1,18 @@
+[project]
+source_root = "../doc"
+source_copy_root = "data/source_copies"
+artifacts_root = "artifacts/p1"
+sqlite_path = "data/skill_v1/releases/20261115_035519_4a3f4b/knowledge.db"
+chroma_path = "data/skill_v1/releases/20261115_035519_4a3f4b/chroma"
+expected_original_docx_count = 55
+
+[embedding]
+provider = "ollama"
+model = "bge-m3:latest"
+base_url = "http://127.0.0.1:11434"
+batch_size = 16
+
+[index]
+collection_prefix = "vat_p1"
+activation_mode = "manual_after_user_acceptance"
+
