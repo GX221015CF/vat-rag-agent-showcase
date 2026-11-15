@@ -4,6 +4,14 @@
 
 本项目在 AI 辅助下开发完成。
 
+## 观看项目介绍
+
+[![观看增值税政策咨询 RAG 介绍视频](docs/showcase/cover.png)](https://gx221015cf.github.io/vat-rag-agent-showcase/showcase/)
+
+**[▶ 在线播放 70 秒项目介绍](https://gx221015cf.github.io/vat-rag-agent-showcase/showcase/)** · [下载 MP4](https://gx221015cf.github.io/vat-rag-agent-showcase/showcase/demo.mp4) · [镜头与媒体说明](docs/showcase/README.md)
+
+视频展示真实网页的连续提问、事实补充、引用原文核对，以及 RAG 链路和 v6.14 阶段评估。1920×1080、30fps、中文字幕、静音，使用 Remotion 制作。
+
 ## 项目范围
 
 - 一般纳税人境内销售货物的一般计税基础咨询，包括视同应税交易、计税依据、纳税义务时间，以及与本案相关的发票和进项抵扣问题。

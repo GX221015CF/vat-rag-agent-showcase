@@ -51,3 +51,17 @@ __pycache__/
 !/docs/展示文件清单.md
 !/docs/架构与复现说明.md
 !/docs/评估摘要.md
+
+# Reviewed video showcase and its isolated Pages workflow.
+!/docs/showcase/
+/docs/showcase/*
+!/docs/showcase/index.html
+!/docs/showcase/cover.png
+!/docs/showcase/demo.mp4
+!/docs/showcase/README.md
+!/docs/showcase/media-manifest.json
+!/.github/
+/.github/*
+!/.github/workflows/
+/.github/workflows/*
+!/.github/workflows/video-pages.yml

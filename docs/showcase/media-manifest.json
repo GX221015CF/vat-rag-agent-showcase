@@ -1,0 +1,29 @@
+{
+  "version": "vat-rag-approved-v1",
+  "confirmed": "2026-11-16",
+  "composition": "VatRagIntroV1",
+  "duration_seconds": 70,
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "video_codec": "H.264",
+  "pixel_format": "yuv420p",
+  "audio": "silent",
+  "files": [
+    {
+      "path": "demo.mp4",
+      "bytes": 2250549,
+      "sha256": "031b5e48559753f452503b141760311c0f2ccaee1391f5c83345d1f704e3e78f"
+    },
+    {
+      "path": "cover.png",
+      "bytes": 341434,
+      "sha256": "ae1df0111ed089479bc94d213e69a8113d9f7a5b7b9c236f9bd476f86e76ce28"
+    },
+    {
+      "path": "index.html",
+      "bytes": 3189,
+      "sha256": "cda1c2f771eda9dcb07166a308a401341bbfbf3c600ca842fa064a7df2403b53"
+    }
+  ]
+}

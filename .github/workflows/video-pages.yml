@@ -1,0 +1,44 @@
+name: Deploy VAT video showcase
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/video-pages.yml'
+      - 'docs/showcase/index.html'
+      - 'docs/showcase/cover.png'
+      - 'docs/showcase/demo.mp4'
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: vat-video-pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Prepare reviewed static files
+        run: |
+          mkdir -p _site/showcase
+          cp docs/showcase/index.html _site/showcase/index.html
+          cp docs/showcase/cover.png _site/showcase/cover.png
+          cp docs/showcase/demo.mp4 _site/showcase/demo.mp4
+          printf '%s\n' 'showcase/cover.png' 'showcase/demo.mp4' 'showcase/index.html' > /tmp/expected-pages-files
+          find _site -type f -printf '%P\n' | sort > /tmp/actual-pages-files
+          diff -u /tmp/expected-pages-files /tmp/actual-pages-files
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy to Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
